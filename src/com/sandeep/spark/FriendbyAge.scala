@@ -14,22 +14,22 @@ object FriendbyAge extends App {
    * 
    */
   
-  // extract age and friend counts. This generates (33, 385) (33,2)
+  // extract age and friend counts. This generates (33, 385) (33,2), (26,2), (55,221)
   val ageFriendsCounts = rawFile.map(line => (line.toString().split(",")(2).toInt,  line.toString().split(",")(3).toInt))
   
-  // map values
+  // next line generates
   /**
-   * 	(26,(293,1))
-			(24,(150,1))
-			(54,(397,1))
-			(54,(200,1))
+   * 	(33,(385,1))
+			(33,(2,1))
+			(26,(2,1))
+			(55,(221,1))
    * 
    */
   val int1 = ageFriendsCounts.mapValues(x => (x,1))
   
   
   /**
-   * groups two (54,(397,1)), (54,(200,1)) as: (54, (597,2))
+   * groups two (33,(385,1)), (33,(2,1)) as: (33, (387,2))
    */
   val int2 = int1.reduceByKey((x,y) => (x._1 + y._1 , x._2 + y._2))
   
@@ -39,4 +39,12 @@ object FriendbyAge extends App {
   val finalVal = int2.mapValues(x => x._1 / x._2)
   
   finalVal.foreach(println)
+  
+  
+  /**
+   * Map methods always takes function that takes one parameter
+   * Reduce methods always takes function that takes two parameters i.e., two values of the same key
+   * 
+   * We always have mapValues but never reduceValues 
+   */
 }
